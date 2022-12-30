@@ -1,11 +1,14 @@
 import { Outlet } from "@remix-run/react";
 import { Links } from "@remix-run/react";
+import { Meta } from "@remix-run/react";
+import { Scripts } from "@remix-run/react";
 import { LiveReload } from "@remix-run/react";
 import { useCatch } from "@remix-run/react";
 
 import type { ReactNode } from "react";
 
 import type { LinksFunction } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/node";
 
 import globalCss from "~/styles/global.css";
 import globalMediumCss from "~/styles/global-medium.css";
@@ -30,6 +33,12 @@ export const links: LinksFunction = () => {
   ];
 };
 
+export const meta: MetaFunction = () => ({
+  charset: "utf-8",
+  description: "Learn Remix and laugh at the same time!",
+  keywords: "Remix,jokes",
+});
+
 function Document({
   children,
   title = "Remix: So great, it's funny!",
@@ -40,12 +49,13 @@ function Document({
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
+        <Meta />
         <title>{title}</title>
         <Links />
       </head>
       <body>
         {children}
+        <Scripts />
         <LiveReload />
       </body>
     </html>

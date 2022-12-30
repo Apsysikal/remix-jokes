@@ -1,9 +1,11 @@
 import { Link } from "@remix-run/react";
 import { useSearchParams } from "@remix-run/react";
 import { useActionData } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 
 import type { ActionArgs } from "@remix-run/node";
 import type { LinksFunction } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/node";
 
 import { db } from "~/utils/db.server";
 import { badRequest } from "~/utils/request.server";
@@ -21,6 +23,11 @@ export const links: LinksFunction = () => {
     },
   ];
 };
+
+export const meta: MetaFunction = () => ({
+  title: "Remix Jokes | Login",
+  description: "Login to submit your own jokes to Remix Jokes!",
+});
 
 function validateUsername(username: string) {
   if (username.length < 4) {
@@ -136,7 +143,7 @@ export default function LoginRoute() {
     <div className="container">
       <div className="content" data-light="">
         <h1>Login</h1>
-        <form method="post">
+        <Form method="post">
           <input
             type="hidden"
             name="redirectTo"
@@ -220,7 +227,7 @@ export default function LoginRoute() {
           <button type="submit" className="button">
             Submit
           </button>
-        </form>
+        </Form>
       </div>
       <div className="links">
         <ul>

@@ -1,11 +1,15 @@
 import { Link } from "@remix-run/react";
 import { useActionData } from "@remix-run/react";
 import { useCatch } from "@remix-run/react";
+import { useTransition } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 
 import { json, redirect } from "@remix-run/node";
 
 import type { LoaderArgs } from "@remix-run/node";
 import type { ActionArgs } from "@remix-run/node";
+
+import { JokeDisplay } from "~/components/joke";
 
 import { db } from "~/utils/db.server";
 import { badRequest } from "~/utils/request.server";
@@ -97,11 +101,32 @@ export const ErrorBoundary = () => {
 
 export default function JokesNewRoute() {
   const actionData = useActionData<typeof action>();
+  const transition = useTransition();
+
+  if (transition.submission) {
+    const name = String(transition.submission.formData.get("name"));
+    const content = String(transition.submission.formData.get("content"));
+
+    if (
+      !name ||
+      !content ||
+      !validateJokeName(name) ||
+      !validateJokeContent(content)
+    ) {
+      return (
+        <JokeDisplay
+          joke={{ name, content }}
+          isOwner={true}
+          canDelete={false}
+        />
+      );
+    }
+  }
 
   return (
     <>
       <p>Add your own hilarious joke!</p>
-      <form method="post">
+      <Form method="post">
         <div>
           <label htmlFor="name">
             Name:{" "}
@@ -157,7 +182,7 @@ export default function JokesNewRoute() {
         <button type="submit" className="button">
           Add
         </button>
-      </form>
+      </Form>
     </>
   );
 }

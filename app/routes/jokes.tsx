@@ -74,7 +74,9 @@ export default function JokesRoute() {
               {jokes.map(({ id, name }) => {
                 return (
                   <li key={id}>
-                    <Link to={`${id}`}>{name}</Link>
+                    <Link to={`${id}`} prefetch="intent">
+                      {name}
+                    </Link>
                   </li>
                 );
               })}
@@ -82,6 +84,11 @@ export default function JokesRoute() {
             <Link to="new" className="button">
               Add your own
             </Link>
+            <p>
+              <Link to="/jokes.rss" reloadDocument>
+                RSS Feed
+              </Link>
+            </p>
           </div>
           <div className="jokes-outlet">
             <Outlet />
